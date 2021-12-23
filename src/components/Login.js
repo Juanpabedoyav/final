@@ -1,6 +1,17 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { loginFacebook, loginGoogle } from '../redux/actions/loginAction'
 
 const Login = () => {
+  const dispatch= useDispatch()
+ 
+  const googleLog =()=>{
+    dispatch(loginGoogle())
+
+ }
+ const facebookLog =()=>{
+    dispatch(loginFacebook())
+}
     return (
         <div>
             <form >
@@ -19,8 +30,8 @@ const Login = () => {
 
                 <button type='submit'>Iniciar Sesion</button>
             </form>
-            <button type='button'>Iniciar Con Google</button>
-            <button type='button'>Iniciar Con Facebook</button>
+            <button onClick={googleLog} type='button'>Iniciar Con Google</button>
+            <button onClick={facebookLog} type='button'>Iniciar Con Facebook</button>
 
         </div>
     )
