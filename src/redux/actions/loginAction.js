@@ -67,7 +67,7 @@ export const loginGoogle = () => {
       signInWithPopup(auth, facebook)
         .then(({ user }) => {
               dispatch(
-            login(user.uid,  user.email)
+            login(user.displayName,  user.email)
           );
         })
         .catch((error) => console.log(error));

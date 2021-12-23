@@ -10,30 +10,34 @@ const Home = () => {
     
     useEffect(() => {
         dispatch(getDataAction('https://recipe-rissoto.vercel.app/recipe'))
+        total();
     }, [dispatch])
     
     const data = useSelector(state => state.data)
     // const {name, ingredients, currency}= {data}
-    const [cantidadInicial, setCantidadInicial] = useState(1)
     
-    const [tocado, setTocado] = useState({
-        name:'',
-        price: ''
+    const [totales, setTotales] = useState()
+    const [checkeados, setCheckeados] = useState()
+
+    
+
+const total = ()=>{
+    let a=[]
+    let suma= 0
+    data.data?.ingredients.map(el => {
+    a.push(el.price)
+    a.forEach(el => {
+        suma+= el} )
+    // console.log(suma)
+    setTotales(suma)
+
     })
-    
-
-
-const handleCheck = ()=>{
-        setTocado({
-            ...tocado,
-            name:data.data.ingredients.product,
-            price:data.data.ingredients.price,
-
-        })
+    // console.log(totales)
 }
 
+
 const selectAll =()=>{
-const boton = document.querySelectorAll('#check')
+const boton = document.querySelectorAll('.check')
 boton.forEach(el =>{
     if(!el.checked){
         el.checked = true;
@@ -44,14 +48,31 @@ boton.forEach(el =>{
 
 }
 const disabledAll =()=>{
-        const boton2 = document.querySelectorAll('#check')
+        const boton2 = document.querySelectorAll('.check')
         boton2.forEach(el =>{
             if(el.checked){
                 el.checked = false;
             }
         })
     }
-
+const handleCheck =({target})=>{
+let a =[]
+if(target?.checked === true){
+setCheckeados([{
+    ...checkeados,
+    precio : target.value,
+}])
+}
+}
+const handleSubmit = (e)=>{
+    e.preventDefault();
+    Swal.fire({
+        icon: 'success',
+        title: 'Pago realizado',
+        showConfirmButton: false,
+        timer: 1500
+      })
+}
     return (
         <HomeStyle>
     <div className="card">
@@ -62,32 +83,16 @@ const disabledAll =()=>{
             <button className="select" type="button" onClick={()=>selectAll()}>Selecionar Todo</button>            
             <button className="select" type="button" onClick={()=>disabledAll()}>Deseleccionar Todo</button>
         </div>
-       <Formik
-       initialValues={{
-        checked: [],
-        cantidad:1,
-       }}
-       onSubmit={(valores)=>{
-           console.log(valores)
-           Swal.fire({
-            icon: 'success',
-            title: 'Pago realizado',
-            showConfirmButton: false,
-            timer: 1500
-          })
-       }}
-       >
-{(values)=>(
-    
+      
 
-        <Form >
+        <form onSubmit={handleSubmit}>
     
             {
               data.data?.ingredients.map(el=>{
                   return(
-        <div className="article">
-            <Field id='check' name='checked' type="checkbox" onClick={handleCheck} />
-            <Field name='cantidad' type="text" defaultValue={cantidadInicial} />
+        <div key={el.price} className="article">
+            <input  className='check'type="checkbox" name={`${el.product}`} value={`${el.price}`} onClick={handleCheck}/>
+            {/* <input name='cantidad' type="text" onChange={handleChange} /> */}
         <div>
                 <h1>{el.product}</h1>
                 <h3>{el.brand}</h3>
@@ -106,13 +111,9 @@ const disabledAll =()=>{
         <p>Subtotal  :precio</p>
         <p>Gastos de envio  {data.data?.["shipping-cost"]}</p>
         <p>Total</p>
-<button type="submit">Comprar ingredientes por total</button>
-        </Form>
-)}
-        </Formik>
-
+<button type="submit">Comprar ingredientes por total {totales}</button>
+        </form>
       
-
         </div>
         </HomeStyle>
     )
