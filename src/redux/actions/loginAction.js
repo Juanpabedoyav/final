@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { facebook, google } from "../../firebase/firebase";
 import { types } from "../types/types";
 
@@ -21,6 +21,17 @@ export const login = (uid, email) => {
      }
  }
   }
+
+export const logoutAsyc = () => {
+  return (dispatch) => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        dispatch(logout());
+      })
+      .catch((err) => console.log(err.message));
+  };
+};
   export const loginAsyc = (email, password) => {
   return (dispatch)=>{
     const auth = getAuth();

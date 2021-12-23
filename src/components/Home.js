@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Swal from "sweetalert2"
 import { getDataAction } from "../redux/actions/getDataAction"
-import { logout } from "../redux/actions/loginAction"
+import { logoutAsyc } from "../redux/actions/loginAction"
 
 const Home = () => {
  const dispatch = useDispatch()
@@ -54,7 +54,7 @@ const disabledAll =()=>{
 
     return (
         <div>
-            <button onClick={()=>dispatch(logout())}>cerrar sesion</button>
+            <button onClick={()=>dispatch(logoutAsyc())}>cerrar sesion</button>
         <div>
             <h6>ingredientes</h6>
             <h1>{data.data?.name}</h1>

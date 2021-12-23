@@ -1,22 +1,42 @@
+import { Field, Form, Formik } from "formik"
+import { useDispatch } from 'react-redux'
+import { useNavigate } from "react-router-dom"
+import { registroAsyc } from '../redux/actions/registroAction'
+
 const Registro = () => {
+    const dispatch = useDispatch()
+   const navegar =  useNavigate()
     return (
         <div>
-              <form >
-            <div>
-                <label htmlFor="name"></label>
-                <input name='name' type="text" placeholder='Nombre del Comensal' />
-            </div>
+            <Formik
+            initialValues={{
+                email:'',
+                password:''
+            }}
+            onSubmit={
+                (val)=>{
+                     console.log(val)   
+                     dispatch(registroAsyc(val.email, val.password))
+                    navegar('/login');
+            }}
+            >
+{()=>(
+              <Form >
+        
             <div>
                 <label htmlFor="email"></label>
-                <input name='email' type="text" placeholder='Correo Electronico' />
+                <Field name='email' type="text" placeholder='Correo Electronico' />
             </div>
             <div>
                 <label htmlFor="password"></label>
-                <input name='password' type="text" placeholder='Contraseña' />
+                <Field name='password' type="text" placeholder='Contraseña' />
             </div>
 
                 <button type='submit'>Registrarme</button>
-            </form>
+            </Form>
+    )}
+            </Formik>
+            
         </div>
     )
 }
