@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Swal from "sweetalert2"
 import { getDataAction } from "../redux/actions/getDataAction"
 import { logoutAsyc } from "../redux/actions/loginAction"
-
+import {HomeStyle} from '../styles/Home.style'
 const Home = () => {
  const dispatch = useDispatch()
     
@@ -14,7 +14,7 @@ const Home = () => {
     
     const data = useSelector(state => state.data)
     // const {name, ingredients, currency}= {data}
-    const [cantidad, setCantidad] = useState(1)
+    const [cantidadInicial, setCantidadInicial] = useState(1)
     
     const [tocado, setTocado] = useState({
         name:'',
@@ -53,19 +53,19 @@ const disabledAll =()=>{
     }
 
     return (
-        <div>
+        <HomeStyle>
+    <div className="card">
             <button onClick={()=>dispatch(logoutAsyc())}>cerrar sesion</button>
-        <div>
+        <div className="title">
             <h6>ingredientes</h6>
             <h1>{data.data?.name}</h1>
-        </div>
-        <div>
-            <button type="button" onClick={()=>selectAll()}>Selecionar Todo</button>            
-            <button type="button" onClick={()=>disabledAll()}>Deseleccionar Todo</button>
+            <button className="select" type="button" onClick={()=>selectAll()}>Selecionar Todo</button>            
+            <button className="select" type="button" onClick={()=>disabledAll()}>Deseleccionar Todo</button>
         </div>
        <Formik
        initialValues={{
         checked: [],
+        cantidad:1,
        }}
        onSubmit={(valores)=>{
            console.log(valores)
@@ -77,7 +77,7 @@ const disabledAll =()=>{
           })
        }}
        >
-{()=>(
+{(values)=>(
     
 
         <Form >
@@ -85,9 +85,9 @@ const disabledAll =()=>{
             {
               data.data?.ingredients.map(el=>{
                   return(
-        <div>
+        <div className="article">
             <Field id='check' name='checked' type="checkbox" onClick={handleCheck} />
-            <Field name='cant' type="text" defaultValue={cantidad} />
+            <Field name='cantidad' type="text" defaultValue={cantidadInicial} />
         <div>
                 <h1>{el.product}</h1>
                 <h3>{el.brand}</h3>
@@ -114,6 +114,7 @@ const disabledAll =()=>{
       
 
         </div>
+        </HomeStyle>
     )
 
 }
